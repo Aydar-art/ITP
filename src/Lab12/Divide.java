@@ -21,7 +21,6 @@ public class Divide {
             int num1 = Integer.parseInt(numberStrings[0]);
             int num2 = Integer.parseInt(numberStrings[1]);
 
-            // Проверка деления на ноль
             if (num2 == 0) {
                 throw new ArithmeticException("Divide by 0");
             }
