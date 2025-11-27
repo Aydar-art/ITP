@@ -16,4 +16,8 @@ public class EntityPosition {
     public int getY() {
         return y;
     }
+
+    public boolean isValid(int boardSize) {
+        return x >= 0 && x < boardSize && y >= 0 && y < boardSize;
+    }
 }

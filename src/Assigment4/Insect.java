@@ -13,7 +13,7 @@ abstract class Insect extends BoardEntity{
         this.color = color;
     }
 
-    public abstract Direction getBestDirection(Map<String, BoardEntity> boardData, int boardSize);
+    public abstract Direction getBestDirection(Map<String, BoardEntity> boardData, int size);
 
     public abstract int travelDirection(Direction dir, Map<String, BoardEntity> boardData, int boardSize);
 

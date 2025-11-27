@@ -1,6 +1,8 @@
 package Assigment4;
 
+import java.util.Map;
+
 public interface OrthogonalMoving {
-    public int getOrthogonalDirection(Direction dir, EntityPosition entityPosition, Board board);
-    public int travelOrthogonally(Direction dir, EntityPosition entityPosition, InsectColor color, Board board);
+    public int getOrthogonalDirectionVisibleValue(Direction dir, EntityPosition entityPosition, Map<String, BoardEntity> boardData, int size);
+    public int travelOrthogonally(Direction dir, EntityPosition entityPosition, InsectColor color, Map<String, BoardEntity> boardData, int size);
 }
