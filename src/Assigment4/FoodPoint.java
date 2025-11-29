@@ -1,7 +1,7 @@
 package Assigment4;
 
-public class FoodPoint extends BoardEntity{ // Позиция точки
-    private int value;               // Значение точки
+public class FoodPoint extends BoardEntity {
+    private int value;
 
     public FoodPoint(EntityPosition position, int value) {
         this.entityPosition = position;

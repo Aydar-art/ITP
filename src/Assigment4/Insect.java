@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.List;
 
-abstract class Insect extends BoardEntity{
-    private InsectColor color;
+public abstract class Insect extends BoardEntity{
+    protected InsectColor color;
     protected List<Direction> directions = new ArrayList<>();
 
     public Insect(EntityPosition entityPosition, InsectColor color) {

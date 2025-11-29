@@ -25,4 +25,8 @@ public class Board {
         return insect.getBestDirection(boardData, size);
     }
 
+    public int getDirectionSum(Insect insect) {
+        return insect.travelDirection(insect.getBestDirection(boardData, size), boardData, size);
+    }
+
 }
