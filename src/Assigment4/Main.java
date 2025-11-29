@@ -177,38 +177,7 @@ public class Main {
         }
 
         // Run the game simulation using only Board methods
-        return runGameSimulation(board, insectsInOrder);
-    }
 
-    private static boolean isValidInsectType(String type) {
-        return type.equalsIgnoreCase("Ant") ||
-                type.equalsIgnoreCase("Butterfly") ||
-                type.equalsIgnoreCase("Spider") ||
-                type.equalsIgnoreCase("Grasshopper");
-    }
-
-    private static EntityPosition createPosition(int x, int y) {
-        EntityPosition position = new EntityPosition();
-        position.entityPosition(x - 1, y - 1);
-        return position;
-    }
-
-    private static Insect createInsect(String type, EntityPosition position, InsectColor color) {
-        switch (type.toLowerCase()) {
-            case "ant":
-                return new Ant(position, color);
-            case "butterfly":
-                return new Butterfly(position, color);
-            case "spider":
-                return new Spider(position, color);
-            case "grasshopper":
-                return new GrassHopper(position, color);
-            default:
-                throw new IllegalArgumentException("Unknown insect type");
-        }
-    }
-
-    private static List<String> runGameSimulation(Board board, List<Insect> insectsInOrder) {
         List<String> results = new ArrayList<>();
 
         for (Insect insect : insectsInOrder) {
@@ -230,6 +199,52 @@ public class Main {
 
         return results;
     }
+
+    private static boolean isValidInsectType(String type) {
+        return type.equalsIgnoreCase("Ant") ||
+                type.equalsIgnoreCase("Butterfly") ||
+                type.equalsIgnoreCase("Spider") ||
+                type.equalsIgnoreCase("Grasshopper");
+    }
+
+    private static EntityPosition createPosition(int x, int y) {
+        EntityPosition position = new EntityPosition();
+        position.entityPosition(x - 1, y - 1);
+        return position;
+    }
+
+    private static Insect createInsect(String type, EntityPosition position, InsectColor color) {
+        return switch (type.toLowerCase()) {
+            case "ant" -> new Ant(position, color);
+            case "butterfly" -> new Butterfly(position, color);
+            case "spider" -> new Spider(position, color);
+            case "grasshopper" -> new GrassHopper(position, color);
+            default -> throw new IllegalArgumentException("Unknown insect type");
+        };
+    }
+
+//    private static List<String> runGameSimulation(Board board, List<Insect> insectsInOrder) {
+//        List<String> results = new ArrayList<>();
+//
+//        for (Insect insect : insectsInOrder) {
+//            // Check if insect is still on the board using Board methods
+//            EntityPosition pos = insect.getEntityPosition();
+//            BoardEntity entity = board.getEntity(pos);
+//            if (entity != insect) {
+//                continue;
+//            }
+//
+//            // Use only Board methods for simulation
+//            Direction bestDirection = board.getDirection(insect);
+//            int foodEaten = board.getDirectionSum(insect);
+//
+//            // Format the result
+//            String result = formatResult(insect, bestDirection, foodEaten);
+//            results.add(result);
+//        }
+//
+//        return results;
+//    }
 
     private static String formatResult(Insect insect, Direction direction, int foodEaten) {
         String color = capitalizeFirst(insect.getColor().toString().toLowerCase());

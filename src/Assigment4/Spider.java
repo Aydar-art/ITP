@@ -19,33 +19,25 @@ public class Spider extends Insect implements DiagonalMoving {
 
         int foodCount = 0;
 
-        if (dir == Direction.NE) {
-            while(currentPos.addY(1, size) && currentPos.addX(1, size)) {
-                BoardEntity entity = boardData.get(currentPos.getX() + "," + currentPos.getY());
-                if (entity instanceof FoodPoint) {
-                    foodCount += ((FoodPoint) entity).getValue();
-                }
+        while(true) {
+            boolean moved = false;
+            if (dir == Direction.SE) {
+                moved = currentPos.addY(1, size) && currentPos.addX(1, size);
+            } else if (dir == Direction.SW) {
+                moved = currentPos.addY(-1, size) && currentPos.addX(1, size);
+            } else if (dir == Direction.NW) {
+                moved = currentPos.addY(-1, size) && currentPos.addX(-1, size);
+            } else if (dir == Direction.NE) {
+                moved = currentPos.addY(1, size) && currentPos.addX(-1, size);
             }
-        } else if (dir == Direction.SE) {
-            while(currentPos.addY(-1, size) && currentPos.addX(1, size)) {
-                BoardEntity entity = boardData.get(currentPos.getX() + "," + currentPos.getY());
-                if (entity instanceof FoodPoint) {
-                    foodCount += ((FoodPoint) entity).getValue();
-                }
-            }
-        } else if (dir == Direction.SW) {
-            while(currentPos.addY(-1, size) && currentPos.addX(-1, size)) {
-                BoardEntity entity = boardData.get(currentPos.getX() + "," + currentPos.getY());
-                if (entity instanceof FoodPoint) {
-                    foodCount += ((FoodPoint) entity).getValue();
-                }
-            }
-        } else if (dir == Direction.NW) {
-            while(currentPos.addY(1, size) && currentPos.addX(-1, size)) {
-                BoardEntity entity = boardData.get(currentPos.getX() + "," + currentPos.getY());
-                if (entity instanceof FoodPoint) {
-                    foodCount += ((FoodPoint) entity).getValue();
-                }
+
+            if (!moved) break;
+
+            String positionKey = currentPos.getX() + "," + currentPos.getY();
+            BoardEntity entity = boardData.get(positionKey);
+
+            if (entity instanceof FoodPoint) {
+                foodCount += ((FoodPoint) entity).getValue();
             }
         }
 
@@ -58,12 +50,24 @@ public class Spider extends Insect implements DiagonalMoving {
         EntityPosition currentPos = new EntityPosition();
         currentPos.entityPosition(entityPosition.getX(), entityPosition.getY());
 
-        while(currentPos.isValid(size)) {
+        while(true) {
+            boolean moved = false;
+            if (dir == Direction.SE) {
+                moved = currentPos.addY(1, size) && currentPos.addX(1, size);
+            } else if (dir == Direction.SW) {
+                moved = currentPos.addY(-1, size) && currentPos.addX(1, size);
+            } else if (dir == Direction.NW) {
+                moved = currentPos.addY(-1, size) && currentPos.addX(-1, size);
+            } else if (dir == Direction.NE) {
+                moved = currentPos.addY(1, size) && currentPos.addX(-1, size);
+            }
+
+            if (!moved) break;
+
             String positionKey = currentPos.getX() + "," + currentPos.getY();
             BoardEntity entity = boardData.get(positionKey);
 
-            if (entity instanceof Insect) {
-                Insect otherInsect = (Insect) entity;
+            if (entity instanceof Insect otherInsect) {
                 if (!otherInsect.getColor().equals(this.color)) {
                     break;
                 }
@@ -72,16 +76,6 @@ public class Spider extends Insect implements DiagonalMoving {
             if (entity instanceof FoodPoint) {
                 foodEaten += ((FoodPoint) entity).getValue();
                 boardData.remove(positionKey);
-            }
-
-            if (dir == Direction.NE) {
-                if (!(currentPos.addY(1, size) && currentPos.addX(1, size))) break;
-            } else if (dir == Direction.SE) {
-                if (!(currentPos.addY(-1, size) && currentPos.addX(1, size))) break;
-            } else if (dir == Direction.SW) {
-                if (!(currentPos.addY(-1, size) && currentPos.addX(-1, size))) break;
-            } else if (dir == Direction.NW) {
-                if (!(currentPos.addY(1, size) && currentPos.addX(-1, size))) break;
             }
         }
 
@@ -101,6 +95,8 @@ public class Spider extends Insect implements DiagonalMoving {
             }
         }
 
+        System.out.println("Spider" + bestDir);
+
         return bestDir;
     }
 
@@ -110,27 +106,5 @@ public class Spider extends Insect implements DiagonalMoving {
         boardData.remove(startPosition);
 
         return travelDiagonally(dir, entityPosition, boardData, size);
-    }
-
-    /**
-     * Helper method to check direction priority according to the rules
-     */
-    private boolean hasHigherPriority(Direction newDir, Direction currentBestDir) {
-        if (currentBestDir == null) return true;
-
-        int newPriority = getDirectionPriority(newDir);
-        int currentPriority = getDirectionPriority(currentBestDir);
-
-        return newPriority < currentPriority;
-    }
-
-    private int getDirectionPriority(Direction dir) {
-        return switch (dir) {
-            case NE -> 1;
-            case SE -> 2;
-            case SW -> 3;
-            case NW -> 4;
-            default -> 5;
-        };
     }
 }

@@ -24,34 +24,36 @@ public class Ant extends Insect implements OrthogonalMoving, DiagonalMoving {
         int foodCount = 0;
 
         if (dir == Direction.N) {
-            while(currentPos.addY(1, size)) {
-                BoardEntity entity = boardData.get(currentPos.getX() + "," + currentPos.getY());
-                if (entity instanceof FoodPoint) {
-                    foodCount += ((FoodPoint) entity).getValue();
-                }
-            }
-        } else if (dir == Direction.E) {
-            while(currentPos.addX(1, size)) {
-                BoardEntity entity = boardData.get(currentPos.getX() + "," + currentPos.getY());
-                if (entity instanceof FoodPoint) {
-                    foodCount += ((FoodPoint) entity).getValue();
-                }
-            }
-        } else if (dir == Direction.S) {
-            while(currentPos.addY(-1, size)) {
-                BoardEntity entity = boardData.get(currentPos.getX() + "," + currentPos.getY());
-                if (entity instanceof FoodPoint) {
-                    foodCount += ((FoodPoint) entity).getValue();
-                }
-            }
-        } else if (dir == Direction.W) {
             while(currentPos.addX(-1, size)) {
                 BoardEntity entity = boardData.get(currentPos.getX() + "," + currentPos.getY());
                 if (entity instanceof FoodPoint) {
                     foodCount += ((FoodPoint) entity).getValue();
                 }
             }
+        } else if (dir == Direction.E) {
+            while(currentPos.addY(1, size)) {
+                BoardEntity entity = boardData.get(currentPos.getX() + "," + currentPos.getY());
+                if (entity instanceof FoodPoint) {
+                    foodCount += ((FoodPoint) entity).getValue();
+                }
+            }
+        } else if (dir == Direction.S) {
+            while(currentPos.addX(1, size)) {
+                BoardEntity entity = boardData.get(currentPos.getX() + "," + currentPos.getY());
+                if (entity instanceof FoodPoint) {
+                    foodCount += ((FoodPoint) entity).getValue();
+                }
+            }
+        } else if (dir == Direction.W) {
+            while(currentPos.addY(-1, size)) {
+                BoardEntity entity = boardData.get(currentPos.getX() + "," + currentPos.getY());
+                if (entity instanceof FoodPoint) {
+                    foodCount += ((FoodPoint) entity).getValue();
+                }
+            }
         }
+
+        System.out.println(foodCount + " " + dir);
 
         return foodCount;
     }
@@ -78,13 +80,13 @@ public class Ant extends Insect implements OrthogonalMoving, DiagonalMoving {
             }
 
             if (dir == Direction.N) {
-                if (!currentPos.addY(1, size)) break;
-            } else if (dir == Direction.E) {
-                if (!currentPos.addX(1, size)) break;
-            } else if (dir == Direction.S) {
-                if (!currentPos.addY(-1, size)) break;
-            } else if (dir == Direction.W) {
                 if (!currentPos.addX(-1, size)) break;
+            } else if (dir == Direction.E) {
+                if (!currentPos.addY(1, size)) break;
+            } else if (dir == Direction.S) {
+                if (!currentPos.addX(1, size)) break;
+            } else if (dir == Direction.W) {
+                if (!currentPos.addY(-1, size)) break;
             }
         }
 
@@ -99,34 +101,36 @@ public class Ant extends Insect implements OrthogonalMoving, DiagonalMoving {
         int foodCount = 0;
 
         if (dir == Direction.NE) {
-            while(currentPos.addY(1, size) && currentPos.addX(1, size)) {
+            while(currentPos.addX(-1, size) && currentPos.addY(1, size)) {
                 BoardEntity entity = boardData.get(currentPos.getX() + "," + currentPos.getY());
                 if (entity instanceof FoodPoint) {
                     foodCount += ((FoodPoint) entity).getValue();
                 }
             }
         } else if (dir == Direction.SE) {
-            while(currentPos.addY(-1, size) && currentPos.addX(1, size)) {
+            while(currentPos.addX(1, size) && currentPos.addY(1, size)) {
                 BoardEntity entity = boardData.get(currentPos.getX() + "," + currentPos.getY());
                 if (entity instanceof FoodPoint) {
                     foodCount += ((FoodPoint) entity).getValue();
                 }
             }
         } else if (dir == Direction.SW) {
-            while(currentPos.addY(-1, size) && currentPos.addX(-1, size)) {
+            while(currentPos.addX(1, size) && currentPos.addY(-1, size)) {
                 BoardEntity entity = boardData.get(currentPos.getX() + "," + currentPos.getY());
                 if (entity instanceof FoodPoint) {
                     foodCount += ((FoodPoint) entity).getValue();
                 }
             }
         } else if (dir == Direction.NW) {
-            while(currentPos.addY(1, size) && currentPos.addX(-1, size)) {
+            while(currentPos.addX(-1, size) && currentPos.addY(-1, size)) {
                 BoardEntity entity = boardData.get(currentPos.getX() + "," + currentPos.getY());
                 if (entity instanceof FoodPoint) {
                     foodCount += ((FoodPoint) entity).getValue();
                 }
             }
         }
+
+        System.out.println(foodCount + " " + dir);
 
         return foodCount;
     }
@@ -153,14 +157,14 @@ public class Ant extends Insect implements OrthogonalMoving, DiagonalMoving {
                 boardData.remove(positionKey);
             }
 
-            if (dir == Direction.NE) {
-                if (!(currentPos.addY(1, size) && currentPos.addX(1, size))) break;
-            } else if (dir == Direction.SE) {
+            if (dir == Direction.SW) {
                 if (!(currentPos.addY(-1, size) && currentPos.addX(1, size))) break;
-            } else if (dir == Direction.SW) {
-                if (!(currentPos.addY(-1, size) && currentPos.addX(-1, size))) break;
             } else if (dir == Direction.NW) {
-                if (!(currentPos.addY(1, size) && currentPos.addX(-1, size))) break;
+                if (!(currentPos.addY(-1, size) && currentPos.addX(-1, size))) break;
+            } else if (dir == Direction.NE) {
+                if (!(currentPos.addX(-1, size) && currentPos.addY(1, size))) break;
+            } else if (dir == Direction.SE) {
+                if (!(currentPos.addY(1, size) && currentPos.addX(1, size))) break;
             }
         }
 
@@ -183,6 +187,8 @@ public class Ant extends Insect implements OrthogonalMoving, DiagonalMoving {
             }
         }
 
+        System.out.println("Ant" + bestDir);
+
         for (Direction direction : directions) {
             if (direction == Direction.NE || direction == Direction.SE ||
                     direction == Direction.SW || direction == Direction.NW) {
@@ -193,6 +199,8 @@ public class Ant extends Insect implements OrthogonalMoving, DiagonalMoving {
                 }
             }
         }
+
+        System.out.println("Ant" + bestDir);
 
         return bestDir;
     }
@@ -209,29 +217,5 @@ public class Ant extends Insect implements OrthogonalMoving, DiagonalMoving {
         }
     }
 
-    /**
-     * Helper method to check direction priority according to the rules
-     */
-    private boolean hasHigherPriority(Direction newDir, Direction currentBestDir) {
-        if (currentBestDir == null) return true;
 
-        int newPriority = getDirectionPriority(newDir);
-        int currentPriority = getDirectionPriority(currentBestDir);
-
-        return newPriority < currentPriority;
-    }
-
-    private int getDirectionPriority(Direction dir) {
-        return switch (dir) {
-            case N -> 1;
-            case E -> 2;
-            case S -> 3;
-            case W -> 4;
-            case NE -> 5;
-            case SE -> 6;
-            case SW -> 7;
-            case NW -> 8;
-            default -> 9;
-        };
-    }
 }

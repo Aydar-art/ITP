@@ -19,28 +19,28 @@ public class GrassHopper extends Insect implements OrthogonalMoving {
 
         int foodCount = 0;
 
-        if (dir == Direction.N) {
+        if (dir == Direction.E) {
             while(jumpPosition(currentPos, 0, 2, size)) {
                 BoardEntity entity = boardData.get(currentPos.getX() + "," + currentPos.getY());
                 if (entity instanceof FoodPoint) {
                     foodCount += ((FoodPoint) entity).getValue();
                 }
             }
-        } else if (dir == Direction.E) {
+        } else if (dir == Direction.S) {
             while(jumpPosition(currentPos, 2, 0, size)) {
                 BoardEntity entity = boardData.get(currentPos.getX() + "," + currentPos.getY());
                 if (entity instanceof FoodPoint) {
                     foodCount += ((FoodPoint) entity).getValue();
                 }
             }
-        } else if (dir == Direction.S) {
+        } else if (dir == Direction.W) {
             while(jumpPosition(currentPos, 0, -2, size)) {
                 BoardEntity entity = boardData.get(currentPos.getX() + "," + currentPos.getY());
                 if (entity instanceof FoodPoint) {
                     foodCount += ((FoodPoint) entity).getValue();
                 }
             }
-        } else if (dir == Direction.W) {
+        } else if (dir == Direction.N) {
             while(jumpPosition(currentPos, -2, 0, size)) {
                 BoardEntity entity = boardData.get(currentPos.getX() + "," + currentPos.getY());
                 if (entity instanceof FoodPoint) {
@@ -71,13 +71,13 @@ public class GrassHopper extends Insect implements OrthogonalMoving {
             nextPos.entityPosition(currentPos.getX(), currentPos.getY());
 
             boolean canContinue = false;
-            if (dir == Direction.N) {
+            if (dir == Direction.E) {
                 canContinue = jumpPosition(nextPos, 0, 2, size);
-            } else if (dir == Direction.E) {
-                canContinue = jumpPosition(nextPos, 2, 0, size);
             } else if (dir == Direction.S) {
-                canContinue = jumpPosition(nextPos, 0, -2, size);
+                canContinue = jumpPosition(nextPos, 2, 0, size);
             } else if (dir == Direction.W) {
+                canContinue = jumpPosition(nextPos, 0, -2, size);
+            } else if (dir == Direction.N) {
                 canContinue = jumpPosition(nextPos, -2, 0, size);
             }
 
@@ -124,14 +124,6 @@ public class GrassHopper extends Insect implements OrthogonalMoving {
         return travelOrthogonally(dir, entityPosition, color, boardData, size);
     }
 
-    /**
-     * Helper method to jump to next position (skip one cell)
-     * @param currentPos current position to modify
-     * @param deltaX change in X coordinate (should be ±2 or 0)
-     * @param deltaY change in Y coordinate (should be ±2 or 0)
-     * @param size board size
-     * @return true if the new position is valid, false otherwise
-     */
     private boolean jumpPosition(EntityPosition currentPos, int deltaX, int deltaY, int size) {
         int newX = currentPos.getX() + deltaX;
         int newY = currentPos.getY() + deltaY;
@@ -140,25 +132,4 @@ public class GrassHopper extends Insect implements OrthogonalMoving {
         return currentPos.isValid(size);
     }
 
-    /**
-     * Helper method to check direction priority according to the rules
-     */
-    private boolean hasHigherPriority(Direction newDir, Direction currentBestDir) {
-        if (currentBestDir == null) return true;
-
-        int newPriority = getDirectionPriority(newDir);
-        int currentPriority = getDirectionPriority(currentBestDir);
-
-        return newPriority < currentPriority;
-    }
-
-    private int getDirectionPriority(Direction dir) {
-        return switch (dir) {
-            case N -> 1;
-            case E -> 2;
-            case S -> 3;
-            case W -> 4;
-            default -> 5;
-        };
-    }
 }
